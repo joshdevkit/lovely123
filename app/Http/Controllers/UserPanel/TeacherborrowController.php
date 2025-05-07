@@ -153,14 +153,9 @@ class TeacherBorrowController extends Controller
     }
     public function create()
     {
-        $constructions = Construction::with('items')->get();
-        $testings = Testing::with('items')->get();
-        $surveyings = Surveying::with('items')->get();
-        $fluids = Fluid::with('items')->get();
-        $computerEngineering = ComputerEngineering::with('items')->get();
         $user = Auth::user();
 
-        return view('profile.teachersborrow.create', compact('testings', 'constructions', 'surveyings', 'fluids', 'computerEngineering', 'user'));
+        return view('profile.teachersborrow.create', compact('user'));
     }
 
     public function store(Request $request)
@@ -277,7 +272,6 @@ class TeacherBorrowController extends Controller
 
     public function dean_index()
     {
-        $teacherborrows = TeacherBorrow::all();
         $notifications = Auth::user()->notifications;
 
         $requisitions = Requisition::with([
@@ -290,7 +284,7 @@ class TeacherBorrowController extends Controller
             ->latest()
             ->get();
         // dd($requisitions);
-        return view('dean.transaction.index', compact('teacherborrows', 'notifications', 'requisitions'));
+        return view('dean.transaction.index', compact('notifications', 'requisitions'));
     }
 
     public function retrieve($id)

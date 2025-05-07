@@ -82,7 +82,6 @@
                         </thead>
                         <tbody>
                             @foreach ($requests as $request)
-                            @if ($request->item_type === 'Equipments')
                             <tr>
                                 {{-- <td>{{ $request->id }}</td>
                                 <td>{{ $request->requested_by_name }}</td>
@@ -110,10 +109,12 @@
                                 <td>{{ date('F d, Y h:i A', strtotime($request->created_at)) }}</td>
                                 <td>{{ $request->status }}</td>
                                 <td>
-                                    {{ now()->diffInDays($request->created_at) }}
+                                    {{ $request->item_type === 'Equipments' ? now()->diffInDays($request->created_at) :
+                                    'Not returnable'
+                                    }}
                                 </td>
+
                             </tr>
-                            @endif
                             @endforeach
 
                         </tbody>

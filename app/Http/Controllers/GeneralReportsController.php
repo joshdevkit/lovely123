@@ -78,6 +78,7 @@ class GeneralReportsController extends Controller
 
         $data = [];
 
+
         switch ($filterType) {
             case 'equipment':
                 $data = $this->getOfficeRequestEquipment();
@@ -98,20 +99,18 @@ class GeneralReportsController extends Controller
 
     protected function getOfficeRequestEquipment()
     {
-        return OfficeRequest::select(
+        $results = OfficeRequest::select(
             'office_requests.*',
             'borrowed_equipment.office_requests_id',
             'borrowed_equipment.borrow_status',
             'equipment.item as equipment_item',
             'equipment_items.serial_no as equipment_serial_no',
             'equipment_items.note as equipment_notes',
-
             'borrowed_equipment.date_returned',
-            'borrowed_equipment.borrow_status',
             'borrowed_equipment.item_id',
             'borrowed_equipment.equipment_serial_id',
-            'equipment_items.serial_no',
             'equipment_items.equipment_id',
+            'equipment_items.status as item_status',
             'equipment.*',
             'users.name as request_by',
             'office_requests.created_at as date_added'
@@ -123,7 +122,14 @@ class GeneralReportsController extends Controller
             ->where('office_requests.item_type', 'Equipments')
             ->where('equipment_items.status', 'Damaged')
             ->get();
+
+        foreach ($results as $index => $item) {
+            $item->serial_no_count = $index + 1;
+        }
+
+        return $results;
     }
+
 
     protected function getOfficeRequestSupplies()
     {

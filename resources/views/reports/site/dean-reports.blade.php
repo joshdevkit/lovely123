@@ -1,175 +1,176 @@
 @extends('layouts.dean')
 
 @section('content')
-    <div class="content-wrapper">
-        <section class="content-header">
-            <div class="container-fluid">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="text-success">Reports</h1>
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        <p class="text-muted">Select a report type to view detailed information.</p>
-                    </div>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
+            @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="text-success">Reports</h1>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <p class="text-muted">Select a report type to view detailed information.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="btn-group" role="group" aria-label="Report options">
-                            <button type="button" class="btn btn-primary" id="equipment_report">Equipment</button>
-                            <button type="button" class="btn btn-secondary" id="supplies_report">Supplies</button>
-                        </div>
-                        <p class="text-muted mt-4">Choose an action whether reports of equipment Items or supplies.
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="btn-group" role="group" aria-label="Report options">
+                        <button type="button" class="btn btn-primary" id="lost_damage">Lost/Damaged
+                            Equipment</button>
+                        <button type="button" class="btn btn-success" id="equipment_report">Equipment</button>
+                        <button type="button" class="btn btn-secondary" id="supplies_report">Supplies</button>
+                    </div>
+                    <p class="text-muted mt-4">Choose an action whether reports of equipment Items or supplies.
+                    </p>
+                </div>
+                <div class="card-body">
+                    <div id="equipment_section" class="d-none mt-4">
+                        <h4>Equipment Report</h4>
+                        <p class="text-muted">Choose a reporting period and specify the dates to generate the report.
                         </p>
+
+                        <!-- Action buttons -->
+                        <div class="d-flex mb-3 mt-4">
+                            <button class="btn btn-success" id="btn_weekly_report">Weekly</button>
+                            <button class="btn btn-info mx-2" id="btn_monthly_report">Monthly</button>
+                            <div class="ml-auto">
+                                <button class="btn btn-info" id="btn_print_report">Print</button>
+                                <button class="btn btn-warning ml-2" id="btn_print_all">Print All</button>
+                            </div>
+                        </div>
+
+                        <p class="text-muted mt-3">You can print the current report or all available reports.</p>
+
+                        <div id="weekly_section" class="d-none mb-3 row align-items-center">
+                            <div class="col-auto">
+                                <label>From:</label>
+                                <input type="date" class="form-control" id="weekly_from">
+                            </div>
+                            <div class="col-auto">
+                                <label>To:</label>
+                                <input type="date" class="form-control" id="weekly_to">
+                            </div>
+                        </div>
+
+                        <div id="monthly_section" class="d-none mb-3">
+                            <label>Select Month:</label>
+                            <select class="form-control" id="monthly_select">
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+
+                        <table id="equipmentTable" class="table table-bordered table-striped mt-5">
+                            <thead>
+                                <tr>
+                                    <th class="w-25">ITEM</th>
+                                    <th>REQUESTED BY</th>
+                                    <th>PURPOSE</th>
+                                    <th>STATUS</th>
+                                    <th>NOTES</th>
+                                    <th>DATE REQUESTED</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data_equipment">
+
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card-body">
-                        <div id="equipment_section" class="d-none mt-4">
-                            <h4>Equipment Report</h4>
-                            <p class="text-muted">Choose a reporting period and specify the dates to generate the report.
-                            </p>
 
-                            <!-- Action buttons -->
-                            <div class="d-flex mb-3 mt-4">
-                                <button class="btn btn-success" id="btn_weekly_report">Weekly</button>
-                                <button class="btn btn-info mx-2" id="btn_monthly_report">Monthly</button>
-                                <div class="ml-auto">
-                                    <button class="btn btn-info" id="btn_print_report">Print</button>
-                                    <button class="btn btn-warning ml-2" id="btn_print_all">Print All</button>
-                                </div>
+                    <div id="supplies_section" class="d-none mt-4">
+                        <h4>Supplies Report</h4>
+                        <p class="text-muted">Choose a reporting period and specify the dates to generate the report.
+                        </p>
+
+                        <div class="d-flex mb-3 mt-4">
+                            <button class="btn btn-success" id="btn_supplies_weekly_report">Weekly</button>
+                            <button class="btn btn-info mx-2" id="btn_supplies_monthly_report">Monthly</button>
+                            <div class="ml-auto">
+                                <button class="btn btn-info" id="btn_supplies_print_report">Print</button>
+                                <button class="btn btn-warning ml-2" id="btn_supplies_print_all">Print All</button>
                             </div>
-
-                            <p class="text-muted mt-3">You can print the current report or all available reports.</p>
-
-                            <div id="weekly_section" class="d-none mb-3 row align-items-center">
-                                <div class="col-auto">
-                                    <label>From:</label>
-                                    <input type="date" class="form-control" id="weekly_from">
-                                </div>
-                                <div class="col-auto">
-                                    <label>To:</label>
-                                    <input type="date" class="form-control" id="weekly_to">
-                                </div>
-                            </div>
-
-                            <div id="monthly_section" class="d-none mb-3">
-                                <label>Select Month:</label>
-                                <select class="form-control" id="monthly_select">
-                                    <option value="01">January</option>
-                                    <option value="02">February</option>
-                                    <option value="03">March</option>
-                                    <option value="04">April</option>
-                                    <option value="05">May</option>
-                                    <option value="06">June</option>
-                                    <option value="07">July</option>
-                                    <option value="08">August</option>
-                                    <option value="09">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                            </div>
-
-                            <table id="equipmentTable" class="table table-bordered table-striped mt-5">
-                                <thead>
-                                    <tr>
-                                        <th class="w-25">ITEM</th>
-                                        <th>QUANTITY REQUESTED</th>
-                                        <th>REQUESTED BY</th>
-                                        <th>PURPOSE</th>
-                                        <th>STATUS</th>
-                                        <th>NOTES</th>
-                                        <th>DATE REQUESTED</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="data_equipment">
-
-                                </tbody>
-                            </table>
                         </div>
 
-                        <div id="supplies_section" class="d-none mt-4">
-                            <h4>Supplies Report</h4>
-                            <p class="text-muted">Choose a reporting period and specify the dates to generate the report.
-                            </p>
+                        <p class="text-muted mt-3">You can print the current report or all available reports.</p>
 
-                            <div class="d-flex mb-3 mt-4">
-                                <button class="btn btn-success" id="btn_supplies_weekly_report">Weekly</button>
-                                <button class="btn btn-info mx-2" id="btn_supplies_monthly_report">Monthly</button>
-                                <div class="ml-auto">
-                                    <button class="btn btn-info" id="btn_supplies_print_report">Print</button>
-                                    <button class="btn btn-warning ml-2" id="btn_supplies_print_all">Print All</button>
-                                </div>
+                        <div id="weekly_supplies_section" class="d-none mb-3 row align-items-center">
+                            <div class="col-auto">
+                                <label>From:</label>
+                                <input type="date" class="form-control" id="weekly_supplies_from">
                             </div>
-
-                            <p class="text-muted mt-3">You can print the current report or all available reports.</p>
-
-                            <div id="weekly_supplies_section" class="d-none mb-3 row align-items-center">
-                                <div class="col-auto">
-                                    <label>From:</label>
-                                    <input type="date" class="form-control" id="weekly_supplies_from">
-                                </div>
-                                <div class="col-auto">
-                                    <label>To:</label>
-                                    <input type="date" class="form-control" id="weekly_supplies_to">
-                                </div>
+                            <div class="col-auto">
+                                <label>To:</label>
+                                <input type="date" class="form-control" id="weekly_supplies_to">
                             </div>
-
-                            <div id="monthly_supplies_section" class="d-none mb-3">
-                                <label>Select Month:</label>
-                                <select class="form-control" id="monthly_supplies_select">
-                                    <option value="01">January</option>
-                                    <option value="02">February</option>
-                                    <option value="03">March</option>
-                                    <option value="04">April</option>
-                                    <option value="05">May</option>
-                                    <option value="06">June</option>
-                                    <option value="07">July</option>
-                                    <option value="08">August</option>
-                                    <option value="09">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                            </div>
-
-                            <table id="suppliesTable" class="table table-bordered table-striped mt-5">
-                                <thead>
-                                    <tr>
-                                        <th class="w-25">ITEM</th>
-                                        <th>QUANTITY REQUESTED</th>
-                                        <th>REQUESTED BY</th>
-                                        <th>PURPOSE</th>
-                                        <th>DATE REQUESTED</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="data_supplies">
-
-                                </tbody>
-                            </table>
                         </div>
+
+                        <div id="monthly_supplies_section" class="d-none mb-3">
+                            <label>Select Month:</label>
+                            <select class="form-control" id="monthly_supplies_select">
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+
+                        <table id="suppliesTable" class="table table-bordered table-striped mt-5">
+                            <thead>
+                                <tr>
+                                    <th class="w-25">ITEM</th>
+                                    <th>QUANTITY REQUESTED</th>
+                                    <th>REQUESTED BY</th>
+                                    <th>PURPOSE</th>
+                                    <th>DATE REQUESTED</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data_supplies">
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 @endsection
 @section('scripts')
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             let originalData = [];
             let originalSuppliesData = [];
 
@@ -185,7 +186,26 @@
                     },
                     success: function(response) {
                         console.log(response);
-                        originalData = response; // Store the response data
+                        originalData = response;
+                        populateEquipmentTable(response);
+                        $('#equipmentTable').DataTable();
+                    }
+                });
+            });
+
+            $('#lost_damage').click(function() {
+                $('#equipment_section').removeClass('d-none');
+                $("#supplies_section").addClass('d-none')
+                $.ajax({
+                    url: '{{ route('auth.site-filter-reports') }}',
+                    type: 'GET',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        filterType: "equipment",
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        originalData = response;
                         populateEquipmentTable(response);
                         $('#equipmentTable').DataTable();
                     }
@@ -220,10 +240,9 @@
 
                     let tableRow = `<tr>
                                 <td>Item: ${item.equipment_item} - Serial No: ${item.equipment_serial_no}</td>
-                                <td>${item.quantity_requested}</td>
                                 <td>${item.request_by}</td>
                                 <td>${item.purpose}</td>
-                                <td>${item.borrow_status}</td>
+                                <td>${item.item_status}</td>
                                 <td>${item.equipment_notes ?? ''}</td>
                                 <td>${formattedDate}</td>
                             </tr>`;
@@ -466,5 +485,5 @@
 
             })
         });
-    </script>
+</script>
 @endsection

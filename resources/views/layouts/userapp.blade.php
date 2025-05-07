@@ -77,11 +77,11 @@
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
                         @php
-                            $notifications = auth()->user()->unreadNotifications()->latest()->limit(5)->get();
+                        $notifications = auth()->user()->unreadNotifications()->latest()->limit(5)->get();
                         @endphp
                         @if ($notifications->count() > 0)
-                            <span class="badge badge-warning navbar-badge"
-                                id="notification-count">{{ $notifications->count() }}</span>
+                        <span class="badge badge-warning navbar-badge" id="notification-count">{{
+                            $notifications->count() }}</span>
                         @endif
                     </a>
 
@@ -89,23 +89,25 @@
                         <span class="dropdown-item dropdown-header">Notifications ({{ $notifications->count() }})</span>
 
                         @forelse($notifications as $notification)
-                            <div class="notification-item" id="notification-{{ $notification->id }}">
-                                <a href="#" class="dropdown-item mark-as-read" data-id="{{ $notification->id }}">
-                                    <div class="d-flex align-items-start">
-                                        <div class="mr-3">
-                                            <i class="fas fa-bell text-info"></i>
-                                        </div>
-                                        <div>
-                                            <span class="font-weight-bold d-block">{!! nl2br(e($notification->data['message'] ?? $notification->data['status'])) !!}</span>
-                                            <div class="text-muted text-sm">
-                                                {{ $notification->created_at->diffForHumans() }}</div>
-                                        </div>
+                        <div class="notification-item" id="notification-{{ $notification->id }}">
+                            <a href="#" class="dropdown-item mark-as-read" data-id="{{ $notification->id }}">
+                                <div class="d-flex align-items-start">
+                                    <div class="mr-3">
+                                        <i class="fas fa-bell text-info"></i>
                                     </div>
-                                </a>
-                            </div>
+                                    <div>
+                                        <span class="font-weight-bold d-block">{!!
+                                            nl2br(e($notification->data['message'] ?? $notification->data['status']))
+                                            !!}</span>
+                                        <div class="text-muted text-sm">
+                                            {{ $notification->created_at->diffForHumans() }}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                         @empty
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">No new notifications</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">No new notifications</a>
                         @endforelse
                     </div>
 
@@ -125,7 +127,7 @@
         </nav>
         <aside class="main-sidebar sidebar-light-success elevation-4">
 
-            <a href="{{ route('dashboard') }}"class="brand-link" style="background-color: #383a3a;">
+            <a href="{{ route('dashboard') }}" class="brand-link" style="background-color: #383a3a;">
                 <div style="position: relative; background-color: #383a3a;">
                     <img src="{{ asset('logo.png') }}" alt="logo" class="brand-image"
                         style="opacity: .8; position: absolute; top: 0; left: 0;">

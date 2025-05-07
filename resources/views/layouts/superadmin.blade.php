@@ -53,7 +53,11 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -72,7 +76,7 @@
         <aside class="main-sidebar sidebar-light-success elevation-4">
             <!-- Brand Logo -->
 
-            <a href="{{ route('dashboard') }}"class="brand-link" style="background-color: #383a3a;">
+            <a href="{{ route('dashboard') }}" class="brand-link" style="background-color: #383a3a;">
                 <div style="position: relative; background-color: #383a3a;">
                     <img src="{{ asset('dist/img/logo.png') }}" alt="logo" class="brand-image"
                         style="opacity: .8; position: absolute; top: 0; left: 0;">

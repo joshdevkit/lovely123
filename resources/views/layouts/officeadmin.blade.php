@@ -125,6 +125,12 @@
                         @endforelse
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

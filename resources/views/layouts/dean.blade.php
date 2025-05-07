@@ -23,7 +23,19 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <style>
+        .dropdown-menu-lg {
+            max-width: 400px;
+            min-width: 300px;
+            width: auto;
+            word-wrap: break-word;
+        }
 
+        .dropdown-item {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+    </style>
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 </head>
 
@@ -41,8 +53,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
-                            class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
 
             </ul>
@@ -52,37 +63,40 @@
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
                         @php
-                            $notifications = auth()->user()->unreadNotifications;
+                        $notifications = auth()->user()->unreadNotifications;
                         @endphp
                         @if ($notifications->count() > 0)
-                            <span class="badge badge-warning navbar-badge">{{ $notifications->count() }}</span>
+                        <span class="badge badge-warning navbar-badge">{{ $notifications->count() }}</span>
                         @endif
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">{{ $notifications->count() }} Notifications</span>
-
+                    <!-- Dropdown menu -->
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
+                        style="max-width: 400px; min-width: 300px; width: auto;">
+                        <span class="dropdown-item dropdown-header text-black">{{ $notifications->count() }}
+                            Notifications</span>
                         @forelse($notifications as $notification)
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-envelope mr-2"></i>
-                                {!! \Illuminate\Support\Str::limit($notification->data['activity'], 20, '...') !!} <br>
-                                {!! \Illuminate\Support\Str::limit($notification->data['status'], 25, '...') !!}
-                                <span
-                                    class="float-right text-muted text-sm">{{ $notification->created_at->diffForHumans() }}</span>
-                            </a>
-                        @empty
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                No new notifications
-                            </a>
-                        @endforelse
-
-
-
-
                         <div class="dropdown-divider"></div>
-                        <a href="" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        <a href="#" class="dropdown-item bg-info text-white"
+                            style="white-space: normal; word-wrap: break-word; padding: 10px;">
+                            <i class="fas fa-envelope mr-2"></i>
+                            {{ $notification->data['activity'] }} <br>
+                            {{ $notification->data['status'] }}
+                            <span class="float-right text-muted text-sm">{{ $notification->created_at->diffForHumans()
+                                }}</span>
+                        </a>
+                        @empty
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-white">
+                            No new notifications
+                        </a>
+                        @endforelse
                     </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                    </a>
                 </li>
 
                 <!-- Logout Button -->
@@ -99,6 +113,8 @@
                 </form>
             </ul>
 
+
+
         </nav>
         <!-- /.navbar -->
 
@@ -106,7 +122,7 @@
         <aside class="main-sidebar sidebar-light-success elevation-4">
             <!-- Brand Logo -->
 
-            <a href="{{ route('dashboard') }}"class="brand-link" style="background-color: #383a3a;">
+            <a href="{{ route('dashboard') }}" class="brand-link" style="background-color: #383a3a;">
                 <div style="position: relative; background-color: #383a3a;">
                     <img src="{{ asset('dist/img/logo.png') }}" alt="logo" class="brand-image"
                         style="opacity: .8; position: absolute; top: 0; left: 0;">

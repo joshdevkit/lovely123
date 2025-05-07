@@ -42,8 +42,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
-                            class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
 
             </ul>
@@ -53,39 +52,43 @@
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
                         @php
-                            $notifications = auth()->user()->unreadNotifications;
+                        $notifications = auth()->user()->unreadNotifications;
                         @endphp
                         @if ($notifications->count() > 0)
-                            <span class="badge badge-warning navbar-badge">{{ $notifications->count() }}</span>
+                        <span class="badge badge-warning navbar-badge">{{ $notifications->count() }}</span>
                         @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right notification_div">
                         <span class="dropdown-item dropdown-header">Notifications
                             ({{ $notifications->count() }})</span>
                         @forelse($notifications as $notification)
-                            <div class="notification-item">
-                                <a href="{{ route('borrows.show', ['id' => $notification->data['requisition_id']]) }}"
-                                    class="dropdown-item mark-as-read" data-id="{{ $notification->id }}">
-                                    <!-- Add data-id attribute -->
-                                    <i class="fas fa-envelope mr-2"></i>
-                                    {!! \Illuminate\Support\Str::limit($notification->data['activity'], 20, '...') !!} <br>
-                                    @if (!empty($notification->data['instructor_name']))
-                                        {{ 'By: ' . $notification->data['instructor_name'] }}
-                                    @else
-                                        {{ $notification->data['message'] }}
-                                    @endif
-                                    <span
-                                        class="float-right text-muted text-sm">{{ $notification->created_at->diffForHumans() }}</span>
-                                </a>
-                            </div>
+                        <div class="notification-item">
+                            <a href="{{ route('borrows.show', ['id' => $notification->data['requisition_id']]) }}"
+                                class="dropdown-item mark-as-read" data-id="{{ $notification->id }}">
+                                <!-- Add data-id attribute -->
+                                <i class="fas fa-envelope mr-2"></i>
+                                {!! \Illuminate\Support\Str::limit($notification->data['activity'], 20, '...') !!} <br>
+                                @if (!empty($notification->data['instructor_name']))
+                                {{ 'By: ' . $notification->data['instructor_name'] }}
+                                @else
+                                {{ $notification->data['message'] }}
+                                @endif
+                                <span class="float-right text-muted text-sm">{{
+                                    $notification->created_at->diffForHumans() }}</span>
+                            </a>
+                        </div>
 
                         @empty
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">No new notifications</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">No new notifications</a>
                         @endforelse
                     </div>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -105,7 +108,7 @@
         <aside class="main-sidebar sidebar-light-success elevation-4">
             <!-- Brand Logo -->
 
-            <a href="{{ route('dashboard') }}"class="brand-link" style="background-color: #383a3a;">
+            <a href="{{ route('dashboard') }}" class="brand-link" style="background-color: #383a3a;">
                 <div style="position: relative; background-color: #383a3a;">
                     <img src="{{ asset('dist/img/logo.png') }}" alt="logo" class="brand-image"
                         style="opacity: .8; position: absolute; top: 0; left: 0;">
